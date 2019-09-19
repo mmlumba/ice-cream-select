@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import IceCream from './components/IceCream'
+import FlavorPicker from './components/FlavorPicker';
+import { Button, Snackbar } from '@material-ui/core';
 
-function App() {
+const App = () => {
+  const [flavor, setFlavor] = useState('')
+  const [showSuccess, setShowSuccess] = useState(false)
+  const [showError, setShowError] = useState(false);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <h1>What's your favorite flavor?</h1>
+      <IceCream color={flavor.color} />
+      <h3>{flavor.name || ""}</h3>
+      <div style={{ display: "inline-block" }}>
+        <FlavorPicker flavor={flavor} setFlavor={setFlavor} />
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => setShowSuccess(true)}
+          style={{
+            backgroundColor: "#f48fb1",
+            color: "#333",
+            marginTop: 50
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          Submit
+        </Button>
+      </div>
+      <Snackbar
+        open={showSuccess}
+        message="Thanks for submitting!"
+        onClose={() => setShowSuccess(false)}
+        autoHideDuration={3000}
+      />
+      <Snackbar
+        open={showError}
+        message="There was an error! Please refresh the page and try again!"
+      />
     </div>
   );
 }
